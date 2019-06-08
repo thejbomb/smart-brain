@@ -12,7 +12,7 @@ import './App.css';
 const particlesOptions = {
   particles: {
     number: {
-      value: 30,
+      value: 40,
       density: {
         enable: true,
         value_area: 800
@@ -23,6 +23,7 @@ const particlesOptions = {
 
 const initialState = {
   input: '',
+  previousInput: '',
   imageUrl: '',
   box: {},
   route: 'signin',
@@ -74,7 +75,12 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input});
+    if ((this.state.input.includes('.png') || this.state.input.includes('.jpeg')) &&
+    this.state.input !== this.state.previousInput) {
+      console.log(this.state.input);
+      console.log(this.state.previousInput);
+      this.setState({imageUrl: this.state.input});
+
       fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -102,6 +108,9 @@ class App extends Component {
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(err => console.log(err));
+
+      this.setState({previousInput: this.state.input});
+    }
   }
 
   onRouteChange = (route) => {
