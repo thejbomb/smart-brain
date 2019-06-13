@@ -28,6 +28,7 @@ const initialState = {
   box: {},
   route: 'signin',
   isSignedIn: false,
+  invalid: false,
   user: {
     id: '',
     name: '',
@@ -110,6 +111,9 @@ class App extends Component {
       .catch(err => console.log(err));
 
       this.setState({previousInput: this.state.input});
+      this.setState({invalid: false});
+    } else {
+      this.setState({invalid: true});
     }
   }
 
@@ -123,7 +127,7 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, imageUrl, route, box } = this.state;
+    const { isSignedIn, imageUrl, route, box, invalid } = this.state;
     return (
       <div className="App">
          <Particles className='particles'
@@ -141,7 +145,17 @@ class App extends Component {
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onButtonSubmit}
               />
-              <FaceRecognition box={box} imageUrl={imageUrl} />
+              { invalid === true ?
+              <div className="pa2 f4 dark-red b">
+                <p>
+                  Invalid input. <br/>Please use a jpeg/png url or use a different url.
+                </p>
+                <FaceRecognition box={box} imageUrl={imageUrl} />
+              </div>
+              : <div>
+                <FaceRecognition box={box} imageUrl={imageUrl} />
+              </div>
+              }
             </div>
           : (
              route === 'signin'

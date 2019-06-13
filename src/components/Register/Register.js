@@ -1,12 +1,5 @@
 import React from 'react';
 
-const onInvalidInput = {
-  name: '',
-  email: '',
-  password: '',
-  invalid: true,
-}
-
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -50,8 +43,7 @@ class Register extends React.Component {
         }
       })
     } else {
-      this.setState(onInvalidInput);
-      console.log('error')
+      this.setState({invalid: true});
     }
   }
 
@@ -105,8 +97,8 @@ class Register extends React.Component {
             </div>
           </main>
         </article>
-        { this.state.Invalid === true ?
-        <div className="pa2 f4 dark-red">
+        { this.state.invalid === true ?
+        <div className="pa2 f4 dark-red b">
           <p>
             Invalid E-mail. <br/>Please use a proper E-mail.
           </p>
