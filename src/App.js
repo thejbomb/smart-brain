@@ -8,6 +8,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import './App.css';
+import Ranking from './components/Ranking/Ranking';
 
 const particlesOptions = {
   particles: {
@@ -35,7 +36,7 @@ const initialState = {
     email: '',
     entries: 0,
     joined: ''
-  }
+  },
 }
 
 class App extends Component {
@@ -75,11 +76,18 @@ class App extends Component {
     this.setState({input: event.target.value});
   }
 
+  LoadRankings = () => {
+    fetch('https://floating-plains-22616.herokuapp.com/rankings')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({rankingList: data});
+        console.log('bye');
+      })
+  }
+
   onButtonSubmit = () => {
-    if ((this.state.input.includes('.png') || this.state.input.includes('.jpeg')) &&
+    if ((this.state.input.includes('.png') || this.state.input.includes('.jpeg') || this.state.input.includes('.jpg')) &&
     this.state.input !== this.state.previousInput) {
-      console.log(this.state.input);
-      console.log(this.state.previousInput);
       this.setState({imageUrl: this.state.input});
 
       fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
@@ -134,37 +142,49 @@ class App extends Component {
           params={particlesOptions}
         />
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
-        { route === 'home'
-          ? <div>
-              <Logo />
-              <Rank
-                name={this.state.user.name}
-                entries={this.state.user.entries}
-              />
-              <ImageLinkForm
-                onInputChange={this.onInputChange}
-                onButtonSubmit={this.onButtonSubmit}
-              />
-              { invalid === true ?
-              <div className="pa2 f4 dark-red b">
-                <p>
-                  Invalid input. <br/>Please use a jpeg/png url or use a different url.
-                </p>
-                <FaceRecognition box={box} imageUrl={imageUrl} />
+
+        {(() => {
+          if (route === 'home') {
+            return (
+              <div>
+                <Logo />
+                <Rank
+                  name={this.state.user.name}
+                  entries={this.state.user.entries}
+                />
+                <ImageLinkForm
+                  onInputChange={this.onInputChange}
+                  onButtonSubmit={this.onButtonSubmit}
+                />
+                { invalid === true ?
+                  <div className="pa2 f4 dark-red b">
+                    <p>
+                      Invalid input. <br/>Please use a jpeg/png url or use a different url.
+                    </p>
+                    <FaceRecognition box={box} imageUrl={imageUrl} />
+                  </div>
+                  : <div>
+                      <FaceRecognition box={box} imageUrl={imageUrl} />
+                    </div>
+                  }
               </div>
-              : <div>
-                <FaceRecognition box={box} imageUrl={imageUrl} />
-              </div>
-              }
-            </div>
-          : (
-             route === 'signin'
-             ? <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-             : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
-        }
+          } else if (route === 'signin') {
+            return (
+              <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            )
+          } else if (route === 'register') {
+            return (
+              <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            )
+          } else if (route === 'rankings') {
+            return (
+              <Ranking onRouteChange={this.onRouteChange}/>
+            )
+          }
+        })()}
       </div>
-    );
+    )
   }
 }
 
