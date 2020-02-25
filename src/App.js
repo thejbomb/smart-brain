@@ -79,8 +79,8 @@ class App extends Component {
   }
 
   LoadRankings = () => {
-    //fetch('https://floating-plains-22616.herokuapp.com/rankings') 
-    fetch('http://localhost:3000/rankings')
+    fetch('https://floating-plains-22616.herokuapp.com/rankings') 
+    //fetch('http://localhost:3000/rankings')
       .then(response => response.json())
       .then(data => {
         this.setState({rankingList: data});
@@ -93,8 +93,8 @@ class App extends Component {
     this.state.input !== this.state.previousInput) {
       this.setState({imageUrl: this.state.input});
 
-      //fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
-        fetch('http://localhost:3000/imageurl', {
+      fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
+        //fetch('http://localhost:3000/imageurl', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -104,8 +104,8 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          //fetch('https://floating-plains-22616.herokuapp.com/image', {
-          fetch('http://localhost:3000/image', {
+          fetch('https://floating-plains-22616.herokuapp.com/image', {
+          //fetch('http://localhost:3000/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
