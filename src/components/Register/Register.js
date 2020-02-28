@@ -26,8 +26,8 @@ class Register extends React.Component {
 
   onSubmitSignIn = () => {
     if (this.state.email.includes('@') && this.state.email.includes('.')) {
-      //fetch('https://floating-plains-22616.herokuapp.com/register', {
-      fetch('http://localhost:3000/register', {
+      fetch('https://floating-plains-22616.herokuapp.com/register', {
+      //fetch('http://localhost:3000/register', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

@@ -52,7 +52,8 @@ class App extends Component {
   componentDidMount() {
     const token = window.sessionStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3000/signin', {
+      fetch('https://floating-plains-22616.herokuapp.com/signin', {
+      //fetch('http://localhost:3000/signin', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +63,8 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         if (data && data.id) {
-          fetch(`http://localhost:3000/profile/${data.id}`, {
+          fetch(`https://floating-plains-22616.herokuapp.com/profile/${data.id}`, {
+          //fetch(`http://localhost:3000/profile/${data.id}`, {
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -121,8 +123,8 @@ class App extends Component {
   }
 
   LoadRankings = () => {
-    //fetch('https://floating-plains-22616.herokuapp.com/rankings') 
-    fetch('http://localhost:3000/rankings')
+    fetch('https://floating-plains-22616.herokuapp.com/rankings') 
+    //fetch('http://localhost:3000/rankings')
       .then(response => response.json())
       .then(data => {
         this.setState({rankingList: data});
@@ -135,8 +137,8 @@ class App extends Component {
     this.state.input !== this.state.previousInput) {
       this.setState({imageUrl: this.state.input});
 
-      //fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
-        fetch('http://localhost:3000/imageurl', {
+      fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
+      //fetch('http://localhost:3000/imageurl', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -149,8 +151,8 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          //fetch('https://floating-plains-22616.herokuapp.com/image', {
-          fetch('http://localhost:3000/image', {
+          fetch('https://floating-plains-22616.herokuapp.com/image', {
+          //fetch('http://localhost:3000/image', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
