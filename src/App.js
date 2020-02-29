@@ -7,8 +7,6 @@ import Register from './components/Register/Register';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
-import Modal from './components/Modal/Modal';
-import Profile from './components/Profile/Profile'
 import './App.css';
 import Ranking from './components/Ranking/Ranking';
 
@@ -31,15 +29,13 @@ const initialState = {
   boxes: [],
   route: 'signin',
   isSignedIn: false,
-  isProfileOpen: false,
   invalid: false,
   user: {
     id: '',
     name: '',
     email: '',
     entries: 0,
-    joined: '',
-    age: 0
+    joined: ''
   },
 }
 
@@ -47,39 +43,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = initialState;
-  }
-
-  componentDidMount() {
-    const token = window.sessionStorage.getItem('token');
-    if (token) {
-      fetch('http://localhost:3000/signin', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.id) {
-          fetch(`http://localhost:3000/profile/${data.id}`, {
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': token
-            }
-          })
-          .then(res => res.json())
-          .then(user => {
-            if (user && user.email) {
-              this.loadUser(user);
-              this.onRouteChange('home');
-            }
-          })
-        }
-      })
-      .catch(console.log)
-    }
   }
 
   loadUser = (data) => {
@@ -93,27 +56,22 @@ class App extends Component {
   }
 
   calculateFaceLocations = (data) => {
-    if (data && data.outputs) {
-      return data.outputs[0].data.regions.map(face => {
-        const clarifaiFace = face.region_info.bounding_box;
-        const image = document.getElementById('inputImage');
-        const width = Number(image.width);
-        const height = Number(image.height);
-        return {
-          leftCol: clarifaiFace.left_col * width,
-          topRow: clarifaiFace.top_row * height,
-          rightCol: width - (clarifaiFace.right_col * width),
-          bottomRow: height - (clarifaiFace.bottom_row * height)
-        }
-      });
-    }
-    return;
+    return data.outputs[0].data.regions.map(face => {
+      const clarifaiFace = face.region_info.bounding_box;
+      const image = document.getElementById('inputImage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - (clarifaiFace.right_col * width),
+        bottomRow: height - (clarifaiFace.bottom_row * height)
+      }
+    });
   }
 
   displayFaceBoxes = (boxes) => {
-    if (boxes) {
-      this.setState({boxes: boxes});
-    }
+    this.setState({boxes: boxes});
   }
 
   onInputChange = (event) => {
@@ -121,8 +79,8 @@ class App extends Component {
   }
 
   LoadRankings = () => {
-    //fetch('https://floating-plains-22616.herokuapp.com/rankings') 
-    fetch('http://localhost:3000/rankings')
+    fetch('https://floating-plains-22616.herokuapp.com/rankings') 
+    //fetch('http://localhost:3000/rankings')
       .then(response => response.json())
       .then(data => {
         this.setState({rankingList: data});
@@ -135,13 +93,10 @@ class App extends Component {
     this.state.input !== this.state.previousInput) {
       this.setState({imageUrl: this.state.input});
 
-      //fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
-        fetch('http://localhost:3000/imageurl', {
+      fetch('https://floating-plains-22616.herokuapp.com/imageurl', {
+        //fetch('http://localhost:3000/imageurl', {
         method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': window.sessionStorage.getItem('token')
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           input: this.state.input
         })
@@ -149,13 +104,10 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          //fetch('https://floating-plains-22616.herokuapp.com/image', {
-          fetch('http://localhost:3000/image', {
+          fetch('https://floating-plains-22616.herokuapp.com/image', {
+          //fetch('http://localhost:3000/image', {
             method: 'put',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': window.sessionStorage.getItem('token')
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
               id: this.state.user.id
             })
@@ -180,34 +132,21 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      return this.setState(initialState)
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
     this.setState({route: route});
   }
 
-  toggleModal = () => {
-    this.setState(state => ({
-      ...state,
-      isProfileOpen: !state.isProfileOpen
-    }));
-  }
-
   render() {
-    const { isSignedIn, imageUrl, route, boxes, invalid, isProfileOpen, user } = this.state;
+    const { isSignedIn, imageUrl, route, boxes, invalid } = this.state;
     return (
       <div className="App">
          <Particles className='particles'
           params={particlesOptions}
         />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal}/>
-
-        { isProfileOpen && 
-          <Modal>
-            <Profile user={user} loadUser={this.loadUser} isProfileOpen={isProfileOpen} toggleModal={this.toggleModal}/>
-          </Modal>
-        }
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
 
         {(() => {
           if (route === 'home') {

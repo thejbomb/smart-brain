@@ -1,5 +1,4 @@
 import React from 'react';
-import './Register.css';
 
 class Register extends React.Component {
   constructor(props) {
@@ -26,8 +25,8 @@ class Register extends React.Component {
 
   onSubmitSignIn = () => {
     if (this.state.email.includes('@') && this.state.email.includes('.')) {
-      //fetch('https://floating-plains-22616.herokuapp.com/register', {
-      fetch('http://localhost:3000/register', {
+      fetch('https://floating-plains-22616.herokuapp.com/register', {
+      //fetch('http://localhost:3000/register', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -60,7 +59,7 @@ class Register extends React.Component {
                 <div className="mt3">
                   <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                   <input
-                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
+                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                     type="text"
                     name="name"
                     id="name"
@@ -70,7 +69,7 @@ class Register extends React.Component {
                 <div className="mt3">
                   <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                   <input
-                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
+                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                     type="email"
                     name="email-address"
                     id="email-address"
@@ -80,7 +79,7 @@ class Register extends React.Component {
                 <div className="mv3">
                   <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                   <input
-                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
+                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                     type="password"
                     name="password"
                     id="password"
