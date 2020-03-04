@@ -39,7 +39,7 @@ class Signin extends React.Component {
           this.saveAuthTokenInSession(data.token);
           fetch(`https://floating-plains-22616.herokuapp.com/profile/${data.userId}`, {  
           //fetch(`http://localhost:3000/profile/${data.userId}`, {
-              method: 'post',
+              method: 'get',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': data.token

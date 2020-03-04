@@ -5,13 +5,13 @@ class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: this.props.user.name,
-      age: this.props.user.age
+      name: this.props.user.name
     }
   }
 
   onProfileUpdate = (data) => {
-    fetch(`http://localhost:3000/profile/${this.props.user.id}`, {
+    fetch(`https://floating-plains-22616.herokuapp.com/profile/${this.props.user.id}`, {
+    //fetch(`http://localhost:3000/profile/${this.props.user.id}`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -61,8 +61,6 @@ class Profile extends Component {
             <hr />
             <label className='mt2 fw6' htmlFor='user-name'>Name:</label>
             <input onChange={this.onFormChange} type='text' name='user-name' className='pa2 ba w-100' placeholder={name}></input>
-            <label className='mt2 fw6' htmlFor='user-age'>Age:</label>
-            <input onChange={this.onFormChange} type='text' name='user-age' className='pa2 ba w-100' placeholder={age}></input>
             <div className='mt4' style={{ display: 'flex', justifyContent: 'space-evenly'}}>
               <button className='b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20'
                 onClick={() => this.onProfileUpdate({name, age})}>

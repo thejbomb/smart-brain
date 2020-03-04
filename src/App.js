@@ -38,8 +38,7 @@ const initialState = {
     name: '',
     email: '',
     entries: 0,
-    joined: '',
-    age: 0
+    joined: ''
   },
 }
 
@@ -65,7 +64,7 @@ class App extends Component {
         if (data && data.id) {
           fetch(`https://floating-plains-22616.herokuapp.com/profile/${data.id}`, {
           //fetch(`http://localhost:3000/profile/${data.id}`, {
-            method: 'post',
+            method: 'get',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': token

@@ -7,8 +7,5 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'tachyons';
 import './index.css';
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
-
 ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
